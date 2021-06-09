@@ -5,6 +5,11 @@ const server = serve({ port: 1993 });
 
 const memory = { total: 0 }
 
+const headers = new Headers({
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET"
+})
+
 async function connect(request: ServerRequest) {
   const socket = await acceptWebSocket({
     conn: request.conn,
@@ -26,7 +31,7 @@ async function connect(request: ServerRequest) {
 
 async function total(request: ServerRequest) {
   const body = JSON.stringify(memory.total)
-  await request.respond({ status: 200, body })
+  await request.respond({ status: 200, body, headers })
 }
 
 async function route(request: ServerRequest) {
