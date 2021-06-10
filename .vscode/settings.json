@@ -1,4 +1,8 @@
 {
+  "deno.suggest.completeFunctionCalls": true,
   "deno.enable": true,
-  "deno.suggest.completeFunctionCalls": true
+  "deno.suggest.imports.hosts": {
+    "https://esm.sh": false,
+    "https://cdn.esm.sh": false
+  }
 }
