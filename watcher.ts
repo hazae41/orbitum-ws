@@ -35,9 +35,13 @@ export async function sync(blockTag: number) {
   const rethwbtc = await getReserves(ethwbtc, { blockTag })
   const rethbat = await getReserves(ethbat, { blockTag })
 
-  repush(prices.ETH, getGasPrice(rethdai, 18))
-  repush(prices.WBTC, getTokenPrice(rethwbtc, 18))
-  repush(prices.BAT, getTokenPrice(rethbat, 18))
+  const eth = getGasPrice(rethdai, 18)
+  const wbtc = getTokenPrice(rethwbtc, 8)
+  const bat = getTokenPrice(rethbat, 18)
+
+  repush(prices.ETH, eth)
+  repush(prices.WBTC, wbtc * eth)
+  repush(prices.BAT, bat * eth)
 
   console.log(blockTag)
 }
