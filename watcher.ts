@@ -30,7 +30,7 @@ function repush<T>(array: T[], item: T) {
   array.push(item)
 }
 
-export async function sync(blockTag: number) {
+ethereum.on("block", async (blockTag: number) => {
   try {
     const rethdai = await getReserves(ethdai, { blockTag })
     const rethwbtc = await getReserves(ethwbtc, { blockTag })
@@ -48,9 +48,4 @@ export async function sync(blockTag: number) {
   } catch (e: unknown) {
     console.error(e)
   }
-}
-
-for (let i = 0; i < 16; i++)
-  await sync(-16 + i)
-
-ethereum.on("block", sync)
+})
