@@ -31,19 +31,23 @@ function repush<T>(array: T[], item: T) {
 }
 
 export async function sync(blockTag: number) {
-  const rethdai = await getReserves(ethdai, { blockTag })
-  const rethwbtc = await getReserves(ethwbtc, { blockTag })
-  const rethbat = await getReserves(ethbat, { blockTag })
+  try {
+    const rethdai = await getReserves(ethdai, { blockTag })
+    const rethwbtc = await getReserves(ethwbtc, { blockTag })
+    const rethbat = await getReserves(ethbat, { blockTag })
 
-  const eth = getGasPrice(rethdai, 18)
-  const wbtc = getTokenPrice(rethwbtc, 8)
-  const bat = getTokenPrice(rethbat, 18)
+    const eth = getGasPrice(rethdai, 18)
+    const wbtc = getTokenPrice(rethwbtc, 8)
+    const bat = getTokenPrice(rethbat, 18)
 
-  repush(prices.ETH, eth)
-  repush(prices.WBTC, wbtc * eth)
-  repush(prices.BAT, bat * eth)
+    repush(prices.ETH, eth)
+    repush(prices.WBTC, wbtc * eth)
+    repush(prices.BAT, bat * eth)
 
-  console.log(blockTag)
+    console.log(blockTag)
+  } catch (e: unknown) {
+    console.error(e)
+  }
 }
 
 for (let i = 0; i < 16; i++)
