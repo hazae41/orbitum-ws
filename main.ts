@@ -23,8 +23,8 @@ export class Handler {
     let current: string | undefined;
 
     try {
-      counts["/total"] ??= 0
-      counts["/total"]++
+      counts["total"] ??= 0
+      counts["total"]++
 
       for await (const msg of socket) {
         if (typeof msg !== "string")
@@ -43,7 +43,7 @@ export class Handler {
       if (current)
         counts[current]--
 
-      counts["/total"]--
+      counts["total"]--
     }
   }
 
