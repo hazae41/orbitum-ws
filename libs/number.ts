@@ -1,4 +1,4 @@
-import { BigNumber } from "https://esm.sh/@ethersproject/bignumber";
+import { BigNumber } from "../deps/ethers.ts";
 
 function tens(power: number) {
   return BigNumber.from(10).pow(power)

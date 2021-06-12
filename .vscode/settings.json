@@ -3,6 +3,8 @@
   "deno.enable": true,
   "deno.suggest.imports.hosts": {
     "https://esm.sh": false,
-    "https://cdn.esm.sh": false
+    "https://cdn.esm.sh": false,
+    "https://deno.land": false,
+    "https://cdn.skypack.dev": false
   }
 }

@@ -1,10 +1,9 @@
-import { JsonRpcProvider } from "https://esm.sh/@ethersproject/providers"
-import { Contract } from "https://esm.sh/@ethersproject/contracts"
+import { Contract, providers } from "./deps/ethers.ts"
 import { getGasPrice, getReserves, getTokenPrice } from "./libs/ethereum.ts";
 
 const PAIR = JSON.parse(await Deno.readTextFile("abi/PAIR.json"));
 
-const ethereum = new JsonRpcProvider(
+const ethereum = new providers.JsonRpcProvider(
   "https://eth.orbitum.space",
   { chainId: 1, name: "ethereum" })
 
