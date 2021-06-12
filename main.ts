@@ -48,11 +48,11 @@ export class Handler {
   }
 
   static async total(request: ServerRequest) {
-    const body = JSON.stringify(counts["/total"] ?? 0)
+    const body = JSON.stringify(counts["total"] ?? 0)
     await request.respond({ status: 200, body, headers })
   }
 
-  static async path(request: ServerRequest, url: URL) {
+  static async count(request: ServerRequest, url: URL) {
     const path = url.searchParams.get("path")
     if (!path) throw new Error("No path provided")
     const body = JSON.stringify(counts[path] ?? 0)
@@ -75,8 +75,8 @@ async function route(request: ServerRequest) {
     if (url.pathname === "/total")
       return await Handler.total(request)
 
-    if (url.pathname === "/path")
-      return await Handler.path(request, url)
+    if (url.pathname === "/count")
+      return await Handler.count(request, url)
 
     if (url.pathname === "/prices")
       return await Handler.prices(request)
