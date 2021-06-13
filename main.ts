@@ -1,6 +1,6 @@
 import { serve, ServerRequest } from "https://deno.land/std@0.98.0/http/server.ts";
 import { acceptWebSocket } from "https://deno.land/std@0.98.0/ws/mod.ts";
-import { prices } from "./uniswap.ts"
+import { prices } from "./prices.ts"
 
 const server = serve({ port: 1993 });
 

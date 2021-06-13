@@ -5,16 +5,22 @@ export async function getReserves(pair: Contract, options: any) {
   return await pair.getReserves(options) as [BigNumber, BigNumber]
 }
 
-export function getGasPrice(reserve: [BigNumber, BigNumber], decimals: number) {
+export function getABPrice(
+  reserve: [BigNumber, BigNumber],
+  da: number, db: number
+) {
   const [a, b] = reserve
-  const x = getFloating(a, 18)
-  const y = getFloating(b, decimals)
+  const x = getFloating(a, da)
+  const y = getFloating(b, db)
   return x / y
 }
 
-export function getTokenPrice(reserve: [BigNumber, BigNumber], decimals: number) {
+export function getBAPrice(
+  reserve: [BigNumber, BigNumber],
+  da: number, db: number
+) {
   const [a, b] = reserve
-  const x = getFloating(a, decimals)
-  const y = getFloating(b, 18)
+  const x = getFloating(a, da)
+  const y = getFloating(b, db)
   return y / x
 }
