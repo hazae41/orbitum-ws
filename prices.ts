@@ -50,7 +50,7 @@ ethereum.on("block", async (blockTag: number) => {
     const rethbat = await getReserves(ethbat, { blockTag })
 
     const eth = getABPrice(rethdai, 18, 18)
-    const wbtc = getBAPrice(rethwbtc, 18, 8)
+    const wbtc = getBAPrice(rethwbtc, 8, 18)
     const bat = getBAPrice(rethbat, 18, 18)
 
     repush(prices.ETH, eth)
