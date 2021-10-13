@@ -1,8 +1,8 @@
 import { BigNumber, Contract } from "../deps/ethers.ts";
 import { getFloating } from "./number.ts";
 
-export async function getReserves(pair: Contract, options: any) {
-  return await pair.getReserves(options) as [BigNumber, BigNumber]
+export async function getReserves(pair: Contract) {
+  return await pair.getReserves() as [BigNumber, BigNumber]
 }
 
 export function getABPrice(
