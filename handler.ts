@@ -47,11 +47,21 @@ async function onsocket(socket: WebSocket) {
   function onmessage(msg: any) {
     if (typeof msg !== "string")
       return
-    const path = sockets.get(socket)
-    if (path) paths[path]--
+
+    const old = sockets.get(socket)
+    if (old) paths[old]--
+
     sockets.set(socket, msg)
-    paths[msg] ??= 0
-    paths[msg]++
+
+    if (msg) {
+      paths[msg] ??= 0
+      paths[msg]++
+    }
+
+    const total = sockets.size
+    const data: any = { total, prices }
+    if (msg) data[msg] = paths[msg]
+    socket.send(JSON.stringify(data))
   }
 
   function onclose() {
