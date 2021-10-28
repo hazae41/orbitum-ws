@@ -9,6 +9,10 @@ setInterval(() => {
   broadcast().catch(console.error)
 }, 1000)
 
+setInterval(() => {
+  broadcast2().catch(console.error)
+}, 60000)
+
 for await (const conn of server)
   onconn(conn).catch(console.error)
 
@@ -44,6 +48,10 @@ async function onsocket(socket: WebSocket) {
 
   sockets.set(socket, "")
 
+  const total = sockets.size
+  const data: any = { total, prices }
+  socket.send(JSON.stringify(data))
+
   function onmessage(msg: any) {
     if (typeof msg !== "string")
       return
@@ -59,7 +67,7 @@ async function onsocket(socket: WebSocket) {
     }
 
     const total = sockets.size
-    const data: any = { total, prices }
+    const data: any = { total }
     if (msg) data[msg] = paths[msg]
     socket.send(JSON.stringify(data))
   }
@@ -78,7 +86,15 @@ async function broadcast() {
   const total = sockets.size
 
   for (const [socket, path] of sockets) {
-    const data: any = { total, prices }
+    const data: any = { total }
+    if (path) data[path] = paths[path]
+    socket.send(JSON.stringify(data))
+  }
+}
+
+async function broadcast2() {
+  for (const [socket, path] of sockets) {
+    const data: any = { prices }
     if (path) data[path] = paths[path]
     socket.send(JSON.stringify(data))
   }
