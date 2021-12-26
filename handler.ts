@@ -69,17 +69,20 @@ async function onsocket(socket: WebSocket) {
     const total = sockets.size
     const data: any = { total }
     if (msg) data[msg] = paths[msg]
-    socket.send(JSON.stringify(data))
-  }
 
-  function onclose() {
-    const path = sockets.get(socket)
-    if (path) paths[path]--
-    sockets.delete(socket)
+    try {
+      socket.send(JSON.stringify(data))
+    } catch (e: unknown) {
+      console.error(e)
+    }
   }
 
   socket.onmessage = e => onmessage(e.data)
-  socket.onclose = _ => onclose()
+  await new Promise(ok => socket.onclose = ok)
+
+  const path = sockets.get(socket)
+  if (path) paths[path]--
+  sockets.delete(socket)
 }
 
 async function broadcast() {
