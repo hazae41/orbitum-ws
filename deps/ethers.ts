@@ -1,1 +1,1 @@
-export * from "https://esm.sh/ethers@5.5.4"
+export * from "https://cdn.ethers.io/lib/ethers-5.5.4.esm.min.js"
