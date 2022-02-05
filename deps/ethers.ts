@@ -1,1 +1,1 @@
-export * from "https://esm.sh/ethers@5.3.1"
+export * from "https://esm.sh/ethers@5.5.4"
