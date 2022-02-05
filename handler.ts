@@ -10,10 +10,6 @@ const headers = new Headers({
 const sockets = new Map<WebSocket, string | undefined>()
 const paths: Record<string, number> = {}
 
-setInterval(() => {
-  broadcast().catch(console.error)
-}, 1000)
-
 for await (const conn of server)
   onconn(conn).catch(console.error)
 
@@ -32,7 +28,7 @@ async function onreq(req: Request) {
   if (url.pathname == "/prices")
     return new Response(JSON.stringify(prices), { headers })
   if (url.pathname == "/paths")
-    return new Response(JSON.stringify(paths), { headers })
+    return new Response(JSON.stringify({ total: sockets.size, paths }), { headers })
 
   const upgrade = req.headers.get("upgrade")
 
@@ -67,9 +63,6 @@ async function onsocket(socket: WebSocket) {
 
   sockets.set(socket, undefined)
 
-  const init = { total: sockets.size }
-  socket.send(JSON.stringify(init))
-
   function onmessage(path: any) {
     try {
       if (typeof path !== "string")
@@ -78,13 +71,6 @@ async function onsocket(socket: WebSocket) {
       decrement(sockets.get(socket))
       sockets.set(socket, path)
       increment(path)
-
-      const data = JSON.stringify({
-        total: sockets.size,
-        [path]: paths[path]
-      })
-
-      socket.send(data)
     } catch (e: unknown) { }
   }
 
@@ -93,12 +79,4 @@ async function onsocket(socket: WebSocket) {
 
   decrement(sockets.get(socket))
   sockets.delete(socket)
-}
-
-async function broadcast() {
-  for (const [socket, path] of sockets) {
-    const data: any = { total: sockets.size }
-    if (path) data[path] = paths[path]
-    socket.send(JSON.stringify(data))
-  }
 }
