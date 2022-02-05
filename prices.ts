@@ -3,13 +3,11 @@ import { getABPrice, getReserves, getBAPrice } from "./libs/ethereum.ts";
 
 const PAIR = JSON.parse(await Deno.readTextFile("abi/PAIR.json"));
 
-export const ethereum = new providers.JsonRpcProvider(
-  "https://eth.orbitum.space",
-  { chainId: 1, name: "ethereum" })
+export const ethereum = new providers.InfuraProvider()
 
 export const polygon = new providers.JsonRpcProvider(
   "https://polygon-rpc.com/",
-  { chainId: 137, name: "polygon" })
+  { chainId: 137, name: "matic" })
 
 export const Uniswap = {
   ETH_DAI: "0xA478c2975Ab1Ea89e8196811F51A7B7Ade33eB11",
