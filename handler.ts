@@ -4,6 +4,8 @@ const headers = new Headers({
   "Access-Control-Allow-Origin": "*"
 })
 
+const server = Deno.listen({ port: 1993 })
+
 const sockets = new Map<WebSocket, string | undefined>()
 const paths: Record<string, number> = {}
 
@@ -75,8 +77,6 @@ async function onsocket(socket: WebSocket) {
 
 while(true) {
 	try {
-		const server = Deno.listen({ port: 1993 })
-
 		for await (const conn of server)
 			onconn(conn).catch(console.error)
 	} catch (e:unknown) {
