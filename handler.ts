@@ -1,7 +1,4 @@
 import { eqic } from "./libs/string.ts";
-import { prices } from "./prices.ts";
-
-const server = Deno.listen({ port: 1993 })
 
 const headers = new Headers({
   "Access-Control-Allow-Origin": "*"
@@ -9,9 +6,6 @@ const headers = new Headers({
 
 const sockets = new Map<WebSocket, string | undefined>()
 const paths: Record<string, number> = {}
-
-for await (const conn of server)
-  onconn(conn).catch(console.error)
 
 async function onconn(conn: Deno.Conn) {
   const http = Deno.serveHttp(conn)
@@ -25,8 +19,6 @@ async function onconn(conn: Deno.Conn) {
 async function onreq(req: Request) {
   const url = new URL(req.url)
 
-  if (url.pathname == "/prices")
-    return new Response(JSON.stringify(prices), { headers })
   if (url.pathname == "/paths")
     return new Response(JSON.stringify({ total: sockets.size, paths }), { headers })
 
@@ -79,4 +71,15 @@ async function onsocket(socket: WebSocket) {
 
   decrement(sockets.get(socket))
   sockets.delete(socket)
+}
+
+while(true) {
+	try {
+		const server = Deno.listen({ port: 1993 })
+
+		for await (const conn of server)
+			onconn(conn).catch(console.error)
+	} catch (e:unknown) {
+		console.error(e)
+	}
 }
